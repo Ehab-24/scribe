@@ -58,7 +58,7 @@ class _WordScreenState extends State<WordScreen> {
                   }
                   if (state is WordError) {
                     return _errorStateWidget(
-                        'Error Occurred!\nCheck your internet connection.');
+                        'Error Occurred!\n${state.message}');
                   }
                   return _errorStateWidget(
                     'Unknown word state: ${state.toString()}',

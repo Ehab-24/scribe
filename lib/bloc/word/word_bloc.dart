@@ -1,7 +1,9 @@
-import 'package:backend_testing/Models/Word.dart';
+
 import 'package:backend_testing/repository/oxford_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+
+import '../../globals/Word.dart';
 
 part 'word_event.dart';
 part 'word_state.dart';

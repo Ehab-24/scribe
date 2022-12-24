@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:backend_testing/repository/constants.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../Models/Word.dart';
 import '../globals/Constants.dart';
+import '../globals/Word.dart';
 
 class LocalRepository {
   LocalRepository._();
@@ -87,7 +87,8 @@ class LocalRepository {
 
     if (response.isNotEmpty) {
       return Word.fromJson(
-        response[0]
+        jsonDecode(response[0][WordFeilds.jsonString] as String),
+        DateTime.now(),
       );
     }
     return null;
@@ -95,11 +96,16 @@ class LocalRepository {
 
   Future<List<Word>> readAllWords() async {
     final db = await instance.database;
-    final List<Map<String, Object?>> response = await db.query(
+    final List<Map<String, Object?>> jsons = await db.query(
       wordsTable,
     );
 
-    return response.map((map) => Word.fromJson(map)).toList();
+    return jsons
+        .map((json) => Word.fromJson(
+              jsonDecode(json[WordFeilds.jsonString] as String),
+              DateTime.parse(json[WordFeilds.dateTime] as String),
+            ))
+        .toList();
   }
 
   Future<void> removeWord(String wordId) async {

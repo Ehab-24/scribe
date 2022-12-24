@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
-import '../../Models/Word.dart';
+import '../../globals/Word.dart';
 import '../../repository/local_repository.dart';
 
 part 'stored_words_event.dart';

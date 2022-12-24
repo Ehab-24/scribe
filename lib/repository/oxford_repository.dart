@@ -4,7 +4,8 @@ import 'package:backend_testing/repository/local_repository.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
-import '../Models/Word.dart';
+import '../globals/Word.dart';
+
 
 class OxfordRepository {
   static Future<Word> getData(String wordId) async {

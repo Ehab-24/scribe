@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:intl/intl.dart';
 
-import '../../Models/Word.dart';
+import '../../globals/Word.dart';
 import '../ui elements/colors.dart';
 import '../widgets/icon_button.dart';
 
@@ -168,7 +168,6 @@ class _StoredWordTileState extends State<_StoredWordTile> {
                   ),
                   Text(
                     DateFormat.yMd().format(widget.word.dateTime),
-                    // widget.word.
                   ),
                 ],
               ),

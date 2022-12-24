@@ -21,17 +21,12 @@ class Word {
     required this.dateTime,
   });
 
-  factory Word.fromJson(Map<String, dynamic> json, DateTime? dateTime) { 
-    final wordData = jsonDecode(
-      json[WordFeilds.jsonString] as String,
-    );
-
-    final DateTime dt = dateTime ?? DateTime.parse(json[WordFeilds.dateTime] as String);
+  factory Word.fromJson(Map<String, dynamic> json, DateTime dateTime) { 
     return Word(
-        id: wordData['id'],
-        dateTime: dt,
-        derivatives: _getDerivatives(wordData),
-        lexicalEntries: _getLexicalEntries(wordData),
+        id: json['id'],
+        dateTime: dateTime,
+        derivatives: _getDerivatives(json),
+        lexicalEntries: _getLexicalEntries(json),
       );
   }
 
