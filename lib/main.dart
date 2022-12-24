@@ -1,3 +1,4 @@
+import 'package:backend_testing/repository/local_repository.dart';
 import 'package:flutter/material.dart';
 
 import 'bloc/stored words/stored_words_bloc.dart';
@@ -8,6 +9,9 @@ import 'presentation/route_controller.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
+
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(const App());
 }
 

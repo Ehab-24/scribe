@@ -22,7 +22,7 @@ class OxfordRepository {
 
     final json = jsonDecode(response.body);
 
-    return Word.fromJson(json);
+    return Word.fromJson(json, DateTime.now());
   }
 
   static Future<Word?> _searchLocalStorage(String wordId) async {

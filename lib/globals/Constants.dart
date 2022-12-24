@@ -40,3 +40,15 @@ const space40v = SizedBox(height: 40,);
 const space60v = SizedBox(height: 60,);
 const space80v = SizedBox(height: 80,);
 const space120v = SizedBox(height: 120,);
+
+class WordFeilds {
+  static const String wordId = 'word_id';
+  static const String jsonString = 'json';
+  static const String dateTime = 'date_time';
+
+  static List<String> allFeilds = [
+    wordId,
+    jsonString,
+    dateTime,
+  ];
+}

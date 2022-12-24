@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'dart:collection';
 
@@ -10,23 +12,31 @@ class Word {
   String id;
   HashSet<String> derivatives;
   List<LexicalEntry> lexicalEntries;
+  DateTime dateTime;
 
   Word({
     required this.id,
     required this.derivatives,
     required this.lexicalEntries,
+    required this.dateTime,
   });
 
-  factory Word.fromJson(Map<String, dynamic> json) => Word(
-        id: json['id'],
-        derivatives: _getDerivatives(json),
-        lexicalEntries: _getLexicalEntries(json),
+  factory Word.fromJson(Map<String, dynamic> json, DateTime? dateTime) { 
+    final wordData = jsonDecode(
+      json[WordFeilds.jsonString] as String,
+    );
+
+    final DateTime dt = dateTime ?? DateTime.parse(json[WordFeilds.dateTime] as String);
+    return Word(
+        id: wordData['id'],
+        dateTime: dt,
+        derivatives: _getDerivatives(wordData),
+        lexicalEntries: _getLexicalEntries(wordData),
       );
+  }
 
   Widget get widget => Column(
-        children: [
-          ..._childWidgets,
-        ],
+        children: _childWidgets,
       ); 
 
   List<Widget> get _childWidgets {

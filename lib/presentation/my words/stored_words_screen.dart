@@ -4,6 +4,8 @@ import 'package:backend_testing/globals/extension_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:intl/intl.dart';
+
 import '../../Models/Word.dart';
 import '../ui elements/colors.dart';
 import '../widgets/icon_button.dart';
@@ -152,14 +154,23 @@ class _StoredWordTileState extends State<_StoredWordTile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                widget.word.id.capitalize(),
-                style: const TextStyle(
-                  fontSize: 18,
-                  letterSpacing: 1.2,
-                  fontWeight: FontWeight.w600,
-                  color: primaryDark,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    widget.word.id.capitalize(),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      letterSpacing: 1.2,
+                      fontWeight: FontWeight.w600,
+                      color: primaryDark,
+                    ),
+                  ),
+                  Text(
+                    DateFormat.yMd().format(widget.word.dateTime),
+                    // widget.word.
+                  ),
+                ],
               ),
               space10v,
               Text(
@@ -212,6 +223,9 @@ class _StoredWordTileState extends State<_StoredWordTile> {
             TextButton(
               child: const Text('Yes'),
               onPressed: () {
+                BlocProvider.of<StoredWordsBloc>(context).add(
+                  RemoveWord(widget.word.id),
+                );
                 Navigator.of(context).pop();
               },
             ),

@@ -4,6 +4,7 @@ import 'package:backend_testing/repository/constants.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../Models/Word.dart';
+import '../globals/Constants.dart';
 
 class LocalRepository {
   LocalRepository._();
@@ -23,8 +24,9 @@ class LocalRepository {
   Future<Database> _initDB(String fileName) async {
     return await openDatabase(
       fileName,
-      version: 1,
+      version: 3,
       onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
     );
   }
 
@@ -32,9 +34,18 @@ class LocalRepository {
     await db.execute('''
   CREATE TABLE $wordsTable (
     ${WordFeilds.wordId} $textType,
-    ${WordFeilds.jsonString} $textType
+    ${WordFeilds.jsonString} $textType,
+    ${WordFeilds.dateTime} $textType
   )
   ''');
+  }
+
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (newVersion > oldVersion) {
+      await db.execute(
+        'ALTER TABLE $wordsTable ADD COLUMN ${WordFeilds.dateTime} $textType DEFAULT 12',
+      );
+    }
   }
 
   /*  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ PUBLIC METHODS ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~*/
@@ -54,6 +65,7 @@ class LocalRepository {
     final values = {
       WordFeilds.wordId: wordId,
       WordFeilds.jsonString: jsonString,
+      WordFeilds.dateTime: DateTime.now().toIso8601String(),
     };
 
     await db.insert(
@@ -74,9 +86,8 @@ class LocalRepository {
     );
 
     if (response.isNotEmpty) {
-      final jsonString = response.first[WordFeilds.jsonString] as String;
       return Word.fromJson(
-        jsonDecode(jsonString),
+        response[0]
       );
     }
     return null;
@@ -84,20 +95,11 @@ class LocalRepository {
 
   Future<List<Word>> readAllWords() async {
     final db = await instance.database;
-    final response = await db.query(
+    final List<Map<String, Object?>> response = await db.query(
       wordsTable,
     );
 
-    List<Map<String, dynamic>> jsons = [];
-    for (Map<String, Object?> item in response) {
-      jsons.add(
-        jsonDecode(
-          item[WordFeilds.jsonString] as String,
-        ),
-      );
-    }
-
-    return jsons.map((json) => Word.fromJson(json)).toList();
+    return response.map((map) => Word.fromJson(map)).toList();
   }
 
   Future<void> removeWord(String wordId) async {
