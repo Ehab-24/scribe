@@ -114,7 +114,6 @@ class _SearchFeildState extends State<_SearchFeild> {
           child: TextField(
             controller: searchController,
             onTap: () => _setSelected(true),
-            onTapOutside: (_) => _setSelected(false),
             onEditingComplete: _pushWordScreen,
             style: const TextStyle(color: Colors.black),
             decoration: InputDecoration(
